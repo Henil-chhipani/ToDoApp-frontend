@@ -6,15 +6,22 @@ import { useEffect, useState } from "react"
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit'
 
+
+
 export default function HomePage() {
 
     const [tasks, setTasks] = useState([])
     const [isFormVisible, setFormVisble] = useState(false)
     const [taskToEdit, setTaskToEdit] = useState(null);
 
+    const url =  import.meta.env.VITE_API_URL;
+    
+    
 
     useEffect(() => {
-        fetch("http://localhost:3001/api/v1/tasks/getTasks")
+        // fetch("http://localhost:3001/api/v1/tasks/getTasks")
+        fetch(`${url}/api/v1/tasks/getTasks`)
+
             .then((res) => res.json())
             .then((response) => {
                 setTasks(response.data)
@@ -25,11 +32,10 @@ export default function HomePage() {
     }, [])
 
     const fetchTasks = () => {
-        fetch("http://localhost:3001/api/v1/tasks/getTasks")
+        fetch(`${url}/api/v1/tasks/getTasks`)
             .then((res) => res.json())
             .then((response) => {
                 setTasks(response.data)
-                console.log(response.data);
 
             })
             .catch((error) => console.error("error in fetching task", error))
@@ -43,7 +49,7 @@ export default function HomePage() {
     }
 
     const onDeletClick = (id) => {
-        fetch(`http://localhost:3001/api/v1/tasks/deleteTask/${id}`, {
+        fetch(`${url}/api/v1/tasks/deleteTask/${id}`, {
             method: 'DELETE',
             headers: {
                 "Content-Type": "application/json",
@@ -72,7 +78,7 @@ export default function HomePage() {
         const updatedStatus = !task.isCompleted;
         
 
-        fetch(`http://localhost:3001/api/v1/tasks/updateIsCompleted`, {
+        fetch(`${url}/api/v1/tasks/updateIsCompleted`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

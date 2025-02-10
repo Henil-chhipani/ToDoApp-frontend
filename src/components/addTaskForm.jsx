@@ -12,7 +12,7 @@ export default function AddTaskForm({ taskData, onTaskAdded }) {
         value = e.target.value
         setTask({ ...task, [id]: value })
     }
-
+    const url = import.meta.env.API_URL;
 
 
     useEffect(() => {
@@ -48,7 +48,7 @@ export default function AddTaskForm({ taskData, onTaskAdded }) {
         }
 
         try {
-            const response = await fetch("http://localhost:3001/api/v1/tasks/addingTask",
+            const response = await fetch(`${url}/api/v1/tasks/addingTask`,
                 {
                     method: "POST",
                     body: JSON.stringify(task),
@@ -67,14 +67,11 @@ export default function AddTaskForm({ taskData, onTaskAdded }) {
                     onTaskAdded()
                 })
 
-
-            console.log("response:", response.status);
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             else {
                 console.log("task added");
-
             }
 
 
@@ -85,49 +82,49 @@ export default function AddTaskForm({ taskData, onTaskAdded }) {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
-      
+
         if (isEmpty()) {
-          const emptyField = Object.keys(task).find(
-            (key) => task[key].trim() === ""
-          );
-          document.getElementById(emptyField)?.focus();
-          return;
+            const emptyField = Object.keys(task).find(
+                (key) => task[key].trim() === ""
+            );
+            document.getElementById(emptyField)?.focus();
+            return;
         }
-      
+
         const data = {
-          _id: taskData._id,
-          taskTitle: task.taskTitle,
-          taskDescription: task.taskDescription,
+            _id: taskData._id,
+            taskTitle: task.taskTitle,
+            taskDescription: task.taskDescription,
         };
 
-        console.log("data",data)
-      
+        console.log("data", data)
+
         try {
-          const res = await fetch("http://localhost:3001/api/v1/tasks/updateTask", {
-            method: "PUT",
-            body: JSON.stringify(data),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-      
-          
-          const responseData = await res.json();
-          console.log("Update response:", responseData);
-      
-          
-          setTask({
-            taskTitle: "",
-            taskDescription: "",
-          });
-      
-          
-          onTaskAdded();
+            const res = await fetch(`${url}/api/v1/tasks/updateTask`, {
+                method: "PUT",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+
+            const responseData = await res.json();
+            console.log("Update response:", responseData);
+
+
+            setTask({
+                taskTitle: "",
+                taskDescription: "",
+            });
+
+
+            onTaskAdded();
         } catch (error) {
-          console.error("Fetch error:", error);
+            console.error("Fetch error:", error);
         }
-      };
-      
+    };
+
 
 
     return (
