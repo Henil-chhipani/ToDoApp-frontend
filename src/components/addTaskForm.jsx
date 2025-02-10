@@ -12,7 +12,7 @@ export default function AddTaskForm({ taskData, onTaskAdded }) {
         value = e.target.value
         setTask({ ...task, [id]: value })
     }
-    const url = import.meta.env.API_URL;
+    const url = import.meta.env.VITE_API_URL;
 
 
     useEffect(() => {
@@ -47,6 +47,8 @@ export default function AddTaskForm({ taskData, onTaskAdded }) {
             return;
         }
 
+        console.log(task);
+        
         try {
             const response = await fetch(`${url}/api/v1/tasks/addingTask`,
                 {
@@ -54,7 +56,6 @@ export default function AddTaskForm({ taskData, onTaskAdded }) {
                     body: JSON.stringify(task),
                     headers: {
                         "Content-Type": "application/json",
-
                     }
                 }
             )
